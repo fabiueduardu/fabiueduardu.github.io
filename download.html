@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+  <title>JSpank</title> 
+  </head>
+  <body>
+     <form>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">INSTAGRAM</span>
+            </div>
+            <input type="text" id="txtUrl" value="instagram.html" class="form-control input-lg"  placeholder="https://www.instagram.com/p/CODE" >   
+            <div class="input-group-prepend">
+                <div class="input-group-text">
+                    <input type="checkbox" id="showThumb" aria-label="Show Thumb">
+                    <label for="showThumb">Show Thumb</label>
+                  </div>
+            </div>  
+            <div class="input-group-prepend">
+                <button type="button" class="btn btn-success" onclick="download();">Download</button>
+              </div>
+          </div>
+  
+        <ul class="list-group" id="listUrl">
+        </ul>
+      </form> 
+  
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+     <script>
+       var indexOfMp4 = '.mp4';
+       var maxVideSearch = 100;
+       var storageDelimiter = ';';
+       var storageDelimiterItem = '|'; 
+
+      if(!localStorage.downloads)
+         localStorage.downloads = '';
+        else{
+          var links = [];
+          var downloads = localStorage.downloads;
+          localStorage.downloads = '';
+          $(downloads.split(storageDelimiter).filter( onlyUnique ))
+          .each(function(i,value){
+              var parse = value.split(storageDelimiterItem);
+              if(parse[0]!= ''){ 
+                  var link = {link:parse[0],owner:parse[1]};
+                  links.push(link); 
+                  doLocalStorage(link);
+              }
+
+          }); 
+          ShowItems(links); 
+
+         
+        }
+    
+        function download(){
+          var $txtUrl = $('#txtUrl');
+          var links = [];
+
+          var url = $txtUrl.val();
+            $.get(url,function(data){
+              var indexOf = data.indexOf(indexOfMp4);
+              var substringAt = data.substring(0,indexOf + indexOfMp4.length);
+              data = data.substring(indexOf+ indexOfMp4.length);
+              var totalLink = 0;
+              while(indexOf != -1){
+                var  link = getLink(substringAt); 
+                indexOf = data.indexOf(indexOfMp4);
+                substringAt = data.substring(0,indexOf + indexOfMp4.length); 
+                data = data.substring(indexOf+ indexOfMp4.length);  
+                totalLink++;
+                
+                var link  = {link:link,owner:url};
+                links.push(link); 
+                doLocalStorage(link);
+
+                if(totalLink>=maxVideSearch)
+                  break;
+              }
+
+            ShowItems(links); 
+            }).always(function(data){});
+        }
+
+        function ShowItems(links){
+          var $listUrl = $('#listUrl');
+          var showThumb = $('#showThumb').is(':checked');
+               $(links.filter( onlyUnique )).each(function(i,value){
+                 $listUrl.prepend(doLink(value,{showThumb:showThumb}));  
+              }); 
+         }
+
+         function doLocalStorage(link)
+         { 
+            localStorage.downloads += storageDelimiter;
+            localStorage.downloads +=  link.link + storageDelimiterItem + link.owner; 
+         }
+
+        function getLink(text){
+              var i= 0;
+              for(i=text.length;i>=0;i--)
+                  if(text[i]=='"')
+                    break;
+  
+            return text.substring(i+1);
+        }
+
+        function doLink(link,options){
+          options = options||{};
+          var modelVideo ='';
+          var classAdd = '';
+          
+          if(options.showThumb) modelVideo = doVideo(link.link);
+          if(options.classAdd) classAdd =options.classAdd;
+
+          var model=  '<li class="list-group-item '+classAdd+'">';
+              model += modelVideo;
+              model +='<a href="'+link.link+'" target="_blank"> '+ link.owner+'</a><br>';
+              model +='<a href="'+link.link+'" target="_blank"> '+ link.link+'</a>';
+              model +='</li>';
+          return model; 
+      
+        }
+
+        function doVideo(link){
+          var model=  '<video width="100" height="100" controls>' +
+                  '    <source src="'+link+'" type="video/mp4">' +
+                    'Your browser does not support the video tag.' +
+                    '</video> <br>' ;
+
+          return model;
+        }
+
+        function onlyUnique(value, index, self) { 
+            return self.indexOf(value) === index;
+        }
+        </script>   
+</body>
+</html>
