@@ -10,15 +10,18 @@
      <form>
         <div class="input-group mb-3">
             <div class="input-group-prepend">
-              <span class="input-group-text" id="basic-addon1">INSTAGRAM</span>
+              <span class="input-group-text" >INSTAGRAM</span>
             </div>
-            <input type="text" id="txtUrl" value="instagram.html" class="form-control input-lg"  placeholder="https://www.instagram.com/p/CODE" >   
+            <input type="text" id="txtUrl"   class="form-control input-lg"  placeholder="https://www.instagram.com/p/CODE" >   
             <div class="input-group-prepend">
                 <div class="input-group-text">
-                    <input type="checkbox" id="showThumb" aria-label="Show Thumb">
-                    <label for="showThumb">Show Thumb</label>
-                  </div>
+                    <input type="checkbox" id="showThumb" aria-label="Show Thumb" >
+                    <label for="showThumb" >Show Thumb</label>
+                </div>
             </div>  
+            <div class="input-group-prepend">
+                <button type="button" class="btn btn-danger" onclick="clearCache();">Clear Cache</button> 
+            </div> 
             <div class="input-group-prepend">
                 <button type="button" class="btn btn-success" onclick="download();">Download</button>
               </div>
@@ -44,16 +47,14 @@
           $(downloads.split(storageDelimiter).filter( onlyUnique ))
           .each(function(i,value){
               var parse = value.split(storageDelimiterItem);
-              if(parse[0]!= ''){ 
+              if(parse[0]!= '' && parse[1]!= ''){ 
                   var link = {link:parse[0],owner:parse[1]};
                   links.push(link); 
                   doLocalStorage(link);
-              }
+               }
 
           }); 
-          ShowItems(links); 
-
-         
+          ShowItems(links);   
         }
     
         function download(){
@@ -85,9 +86,14 @@
             }).always(function(data){});
         }
 
+        function clearCache(){
+          localStorage.downloads = '';
+        }
+
         function ShowItems(links){
           var $listUrl = $('#listUrl');
           var showThumb = $('#showThumb').is(':checked');
+ 
                $(links.filter( onlyUnique )).each(function(i,value){
                  $listUrl.prepend(doLink(value,{showThumb:showThumb}));  
               }); 
