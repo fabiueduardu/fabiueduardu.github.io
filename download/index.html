@@ -62,32 +62,41 @@
           var links = [];
 
           var url = $txtUrl.val();
-            $.get(url,function(data){
-              var indexOf = data.indexOf(indexOfMp4);
-              var substringAt = data.substring(0,indexOf + indexOfMp4.length);
-              data = data.substring(indexOf+ indexOfMp4.length);
-              var totalLink = 0;
-              while(indexOf != -1){
-                var  link = getLink(substringAt); 
-                indexOf = data.indexOf(indexOfMp4);
-                substringAt = data.substring(0,indexOf + indexOfMp4.length); 
-                data = data.substring(indexOf+ indexOfMp4.length);  
-                totalLink++;
-                
-                var link  = {link:link,owner:url};
-                links.push(link); 
-                doLocalStorage(link);
+          $.ajax({
+              url:url,
+              type: 'GET',
+              success: function(data){ 
+                    var indexOf = data.indexOf(indexOfMp4);
+                    var substringAt = data.substring(0,indexOf + indexOfMp4.length);
+                    data = data.substring(indexOf+ indexOfMp4.length);
+                    var totalLink = 0;
+                    while(indexOf != -1){
+                      var  link = getLink(substringAt); 
+                      indexOf = data.indexOf(indexOfMp4);
+                      substringAt = data.substring(0,indexOf + indexOfMp4.length); 
+                      data = data.substring(indexOf+ indexOfMp4.length);  
+                      totalLink++;
+                      
+                      var link  = {link:link,owner:url};
+                      links.push(link); 
+                      doLocalStorage(link);
 
-                if(totalLink>=maxVideSearch)
-                  break;
+                      if(totalLink>=maxVideSearch)
+                        break;
+                    }
+
+                  ShowItems(links); 
+              },
+              error: function(data) {
+                alert('Error: ' +  data.statusText);
+                console.log(data);
               }
-
-            ShowItems(links); 
-            }).always(function(data){});
+          }); 
         }
 
         function clearCache(){
           localStorage.downloads = '';
+          $('#listUrl').empty();
         }
 
         function ShowItems(links){
