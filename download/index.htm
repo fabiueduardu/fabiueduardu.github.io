@@ -1,0 +1,241 @@
+
+<!doctype html>
+<html lang="en" ng-app="uiApp">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="download instagram videos">
+    <meta name="author" content="JSpank">
+    <title>JSpank</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">  </head>
+  <body>
+<div  ng-controller="appController">
+    <header>
+      <div class="collapse bg-dark" id="navbarHeader">
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-8 col-md-7 py-4">
+              <h4 class="text-white">About</h4>
+              <p class="text-muted">Aliquam quis libero id turpis mattis elementum.</p>
+            </div>
+            <div class="col-sm-4 offset-md-1 py-4">
+              <h4 class="text-white">Contact</h4>
+              <ul class="list-unstyled">
+                <li><a href="https://twitter.com/fabiueduardu" class="text-white" target=_blank>Twitter</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="navbar navbar-dark bg-dark box-shadow">
+        <div class="container d-flex justify-content-between">
+          <a href="." class="navbar-brand d-flex align-items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+            <strong>JSpank</strong>
+          </a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main role="main">
+
+      <section class="jumbotron text-center">
+        <div class="container">
+        <form>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" >
+
+                                <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                width="20" height="20" viewBox="0 0 510 510" style="enable-background:new 0 0 510 510;" xml:space="preserve">
+                           <g>
+                               <g id="post-instagram">
+                                   <path d="M459,0H51C22.95,0,0,22.95,0,51v408c0,28.05,22.95,51,51,51h408c28.05,0,51-22.95,51-51V51C510,22.95,487.05,0,459,0z
+                                        M255,153c56.1,0,102,45.9,102,102c0,56.1-45.9,102-102,102c-56.1,0-102-45.9-102-102C153,198.9,198.9,153,255,153z M63.75,459
+                                       C56.1,459,51,453.9,51,446.25V229.5h53.55C102,237.15,102,247.35,102,255c0,84.15,68.85,153,153,153c84.15,0,153-68.85,153-153
+                                       c0-7.65,0-17.85-2.55-25.5H459v216.75c0,7.65-5.1,12.75-12.75,12.75H63.75z M459,114.75c0,7.65-5.1,12.75-12.75,12.75h-51
+                                       c-7.65,0-12.75-5.1-12.75-12.75v-51c0-7.65,5.1-12.75,12.75-12.75h51C453.9,51,459,56.1,459,63.75V114.75z"/>
+                               </g>
+                           </g></g>
+                           </svg>
+
+                            <strong>  *URL</strong></span>
+                    </div>
+                    <input type="text" id="url_download" required ng-model="url_download"  class="form-control input-lg"  placeholder="https://www.instagram.com/p/CODE"  autocomplete="off" >   
+                 </div>
+                 <p>
+                        <button type="button" class="btn btn-success" ng-click="download();">Download</button>
+                        <button type="button" class="btn btn-danger" ng-click="clearCache();">Clear Cache</button> 
+                        <button type="reset" class="btn btn-warning" >Reset</button>
+                 </p>
+                <ul class="list-group" id="listUrl">
+                </ul>
+           </form> 
+        </div>
+      </section>
+    
+        <div class="container">
+          <div class="row">              
+            <div class="col-md-3" ng-repeat="item in itens track by $index">
+                <div class="card mb-3 box-shadow" >
+                    <img class="card-img-top"  src="{{item.thumbUrl}}" title="{{item.description}}"  >
+                    <div class="card-body">
+                    <p class="card-text">{{item.description}} </p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="btn-group">
+                        <a href="{{item.link}}" target="_blank" class="btn btn-sm btn-outline-secondary">View</a>
+                        </div>
+                        <small class="text-muted">{{item.dateCreate}}</small>
+                    </div>
+                 </div>              
+                </div>
+            </div>
+          </div>
+        </div>    
+
+    </main>
+
+ 
+    <footer class="text-muted">
+        
+      <div class="container">
+            <hr>
+        <p class="float-right">
+          <a href="#">Back to top</a>
+        </p>
+        <i>JSpank 2018</i>
+     </div>
+    </footer>
+</div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular.min.js"></script>
+    <script>
+       var indexOfMp4 = '.mp4';
+       var maxVideSearch = 100;
+       var storageDelimiter = ';';
+       var storageDelimiterItem = '|'; 
+       var indexOfTitle = '<title>';
+       var indexOfTitleEnd = '</title>';
+       var indexOfThumb = 'property="og:image" content="';
+       var indexOfThumbEnd = '"';
+
+        angular.module('uiApp', [])
+            .controller('appController', function( $scope) {
+                $scope.itens = [];
+
+                if(location.hash)
+                $scope.url_download =location.hash.substring(1);
+
+                try{
+                    if(localStorage.jsDownloads)
+                    {
+                        var itens = JSON.parse(localStorage.jsDownloads);
+                        $(itens).each(function(i, item){
+                            $scope.itens.splice(0, 0, item);
+                        });
+                    }
+                }catch(error){
+                    }
+    
+                $scope.getLink = function(text){
+                    var i= 0;
+                    for(i=text.length;i>=0;i--)
+                        if(text[i]=='"')
+                            break;
+        
+                    return text.substring(i+1);
+                };
+
+                $scope.getThumb = function(data)
+                {
+                var indexOf = data.indexOf(indexOfThumb);
+                data = data.substring(indexOf+indexOfThumb.length);
+                var indexOfIend = data.indexOf(indexOfThumbEnd);
+                var substringAt = data.substring(0,indexOfIend);
+                if(indexOf==-1) return '';
+
+                return substringAt;
+                }
+
+                $scope.getTitle = function(data)
+                {
+                    var indexOf = data.indexOf(indexOfTitle);
+                    var indexOfIend = data.indexOf(indexOfTitleEnd);
+                    var substringAt = data.substring(indexOf+indexOfTitle.length,indexOfIend);
+                    if(indexOf==-1) return '';
+
+                    return substringAt;
+                }
+
+                $scope.clearCache=function(){
+                    localStorage.removeItem('jsDownloads');
+                };
+                $scope.download =function(){
+                     var links = [];
+                    var url = $scope.url_download;
+
+                    if(!url)
+                        return alert('URL required!');
+                        
+                    $.ajax({
+                        url:url,
+                        type: 'GET',
+                        success: function(data){ 
+                                var dataHTML = data;
+                                var indexOf = data.indexOf(indexOfMp4);
+                                var substringAt = data.substring(0,indexOf + indexOfMp4.length);
+                                data = data.substring(indexOf+ indexOfMp4.length);
+                                var totalLink = 0;
+                                var links =[];
+                                while(indexOf != -1){
+                                var  link = $scope.getLink(substringAt); 
+                                indexOf = data.indexOf(indexOfMp4);
+                                substringAt = data.substring(0,indexOf + indexOfMp4.length); 
+                                data = data.substring(indexOf+ indexOfMp4.length);  
+                                totalLink++;
+                                
+                                if(links.indexOf(link)!=-1)
+                                    continue;
+
+                                var item  = {
+                                         link:link
+                                        ,thumbUrl: $scope.getThumb(dataHTML)
+                                        ,dateCreate: new Date().toLocaleDateString()+' '+new Date().toLocaleTimeString()
+                                        ,description : $scope.getTitle(dataHTML)
+                                  };
+
+                                $scope.itens.splice(0, 0, item);
+                                links.push(link);
+                                if(totalLink>=maxVideSearch)
+                                    break;
+                                }
+
+                                localStorage.jsDownloads = JSON.stringify($scope.itens);
+                                $scope.$apply();
+                        },
+                        error: function(data) {
+                            alert('Error: ' +  data.statusText);
+                            console.log(data);
+                        }
+                    }); 
+                }
+
+            });
+    </script>
+  </body>
+</html>
+   <!-- Global site tag (gtag.js) - Google Analytics -->
+   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-76968512-2"></script>
+   <script>
+       window.dataLayer = window.dataLayer || [];
+       function gtag() { dataLayer.push(arguments); }
+       gtag('js', new Date());
+
+       gtag('config', 'UA-76968512-2');
+   </script>
