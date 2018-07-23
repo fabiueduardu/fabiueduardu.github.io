@@ -145,6 +145,11 @@
        var indexOfThumb = 'property="og:image" content="';
        var indexOfThumbEnd = '"';
        var loadStorageKey = 'jsDownloads';
+       var messages =  {
+            not_found:'Not found',
+            has_error:'There was an error, please try again.',
+            url_required :'URL required!'
+           };
 
         angular.module('uiApp', [])
             .controller('appController', function( $scope) {
@@ -228,7 +233,7 @@
                     var url = $scope.url_download;
 
                     if(!url)
-                        return alert('URL required!');
+                        return alert(messages.url_required);
                         
                     $.ajax({
                         url:url,
@@ -239,37 +244,54 @@
                                 var substringAt = data.substring(0,indexOf + indexOfMp4.length);
                                 data = data.substring(indexOf+ indexOfMp4.length);
                                 var totalLink = 0;
-                                var links =[];
-                                while(indexOf != -1){
-                                var  link = $scope.getLink(substringAt); 
-                                indexOf = data.indexOf(indexOfMp4);
-                                substringAt = data.substring(0,indexOf + indexOfMp4.length); 
-                                data = data.substring(indexOf+ indexOfMp4.length);  
-                                totalLink++;
-                                
-                                if(links.indexOf(link)!=-1)
-                                    continue;
 
-                                var item  = {
-                                         link:link
-                                        ,thumbUrl: $scope.getThumb(dataHTML)
+                                var itemLinkThumb = $scope.getThumb(dataHTML);
+                                var itemTitle = $scope.getTitle(dataHTML);
+                                var links = [];
+                                var item_default = {
+                                        link: itemLinkThumb
+                                        ,thumbUrl: itemLinkThumb
                                         ,dateCreate: new Date().toLocaleDateString()+' '+new Date().toLocaleTimeString()
-                                        ,description : $scope.getTitle(dataHTML)
-                                  };
+                                        ,description : itemTitle
+                                    };
+                     
+                                while(indexOf != -1)
+                                {
+                                    var  link = $scope.getLink(substringAt); 
+                                    indexOf = data.indexOf(indexOfMp4);
+                                    substringAt = data.substring(0,indexOf + indexOfMp4.length); 
+                                    data = data.substring(indexOf+ indexOfMp4.length);  
+                                    totalLink++;
+                                    
+                                    if(links.indexOf(link)!=-1)
+                                        continue;
 
-                                $scope.itens.splice(0, 0, item);
-                                $scope.itens_readonly.splice(0, 0, item);
+                                    var item  = {
+                                            link:link
+                                            ,thumbUrl: item_default.thumbUrl
+                                            ,dateCreate: new Date().toLocaleDateString()+' '+new Date().toLocaleTimeString()
+                                            ,description : item_default.description
+                                    };
 
-                                links.push(link);
-                                if(totalLink>=maxVideSearch)
-                                    break;
+                                    $scope.itens.splice(0, 0, item);
+                                    $scope.itens_readonly.splice(0, 0, item);
+
+                                    links.push(link);
+                                    if(totalLink>=maxVideSearch)
+                                        break;
                                 }
 
+                                if(links.length == 0 )
+                                {
+                                    $scope.itens.splice(0, 0, item_default);
+                                    $scope.itens_readonly.splice(0, 0, item_default);
+                                }
+                                
                                 localStorage.setItem(loadStorageKey,JSON.stringify($scope.itens));
                                 $scope.$apply();
                         },
                         error: function(data) {
-                            alert('Error: ' +  data.statusText);
+                            alert(messages.has_error + '['+ data.statusText + ']');
                             console.log(data);
                         }
                     }); 
