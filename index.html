@@ -3,9 +3,46 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
     <title>JSpank</title>
-    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <style>
+     .container {
+         width: 100vw;
+         height: 100vh;
+         background: #000;
+         display: flex;
+         flex-direction: row;
+         justify-content: center;
+         align-items: center;
+     }
+     .box {
+         width: 350px;
+         height: 300px;
+     }
+     body {
+        margin: 0px;
+     }
+     </style>
+</head>
+<body>
+    <div class="container">
+            <div class="box">
+        <table border="0">
+            <tr>
+                <td rowspan="4">
+                    <img src="data:image/png;base64,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" alt="Contact" title="Contact" >   
+                </td>
+                <td valign="center" >
+                    <font size="1em" face="verdana" color="#FFF">
+                        <strong>Fabio Eduardo</strong><br>
+                        <a href="tel:+5511972507640" title="cell phone">+55 11 97250-7640</a><br>
+                        <a href="http://www.jspank.com.br?q=Home" title="website">JSpank.com.br</a>
+                    </font>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-76968512-2"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -13,16 +50,6 @@
         gtag('js', new Date());
 
         gtag('config', 'UA-76968512-2');
-    </script>
-    <style>
-        .center {
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-        }
-    </style>
-</head>
-<body style="background: #000">
-    <img src="contact.PNG" alt="Contact" title="Contact" class="center">
-</body>
-</html>
+</script>
+
+
