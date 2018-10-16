@@ -8,7 +8,13 @@
     <meta name="author" content="JSpank">
     <title>JSpank</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">  </head>
-  <body>
+       
+<style>.linethrough{ 
+        text-decoration:line-through;
+        color:#ccc;
+     }
+        </style>
+    <body>
     <div  ng-controller="appController" ng-cloak>
 
     <header>
@@ -47,12 +53,10 @@
         <div class="container">
             <ul class="list-group" ng-repeat="item in itens track by $index">
                 <li class="list-group-item" data-code="{{item}}"> 
-                    <a href="quizeapp://cod/{{item}}" target="_blank" ng-click="remove(item)">{{$index}}: {{item}}</a></li>
+                    <a  ng-class="{'linethrough':hasAdd(item)}" href="quizeapp://cod/{{item}}" target="_blank" ng-click="remove(item)">{{$index}}: {{item}}</a></li>
               </ul>
-              <button class="btn btn-default btn-block" ng-click="tryAll()">ALL</button>
-        </div>
+         </div>
       </section>
-     
 
     </main>
 
@@ -73,6 +77,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular.min.js"></script>
     <script>
+        var loadStorageKey = 'qzItens';
         var app =  angular.module('uiApp', []);
 
        
@@ -137,13 +142,27 @@
                 itens.push('K9AJ95');
                 itens.push('y9kma746');
                 itens.push('4qfc95');
-
-
+ 
 
                 $scope.itens = itens; 
-                $scope.remove = function(item){
-                   // $scope.itens.splice(index, 1);
-                   $('[data-code="'+item+'"]').remove();
+                $scope.remove = function(value){
+                    $('[data-code="'+value+'"]').remove();
+                    localStorageItem.add(value);
+                }
+
+                $scope.hasAdd = function(value){
+                  return localStorageItem.has(value);
+                }
+
+                var  localStorageItem = {
+                    has:function(value){
+                        var localStorageValue = localStorage.getItem(loadStorageKey)||'';       
+                        return localStorageValue.indexOf(value)!=-1;
+                    },add:function(value){
+                        var localStorageValue = localStorage.getItem(loadStorageKey)||'';      
+                        localStorageValue+=';'+value; 
+                        localStorage.setItem(loadStorageKey,localStorageValue);
+                    }
                 }
 
               $scope.tryAll = function(){
