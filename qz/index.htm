@@ -1,0 +1,152 @@
+
+<!doctype html>
+<html lang="en" ng-app="uiApp">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="quize">
+    <meta name="author" content="JSpank">
+    <title>JSpank</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">  </head>
+  <body>
+    <div  ng-controller="appController" ng-cloak>
+
+    <header>
+      <div class="collapse bg-dark" id="navbarHeader">
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-8 col-md-7 py-4">
+              <h4 class="text-white">About</h4>
+              <p class="text-muted">Aliquam quis libero id turpis mattis elementum.</p>
+            </div>
+            <div class="col-sm-4 offset-md-1 py-4">
+              <h4 class="text-white">Contact</h4>
+              <ul class="list-unstyled">
+                <li><a href="https://twitter.com/fabiueduardu" class="text-white" target=_blank>Twitter</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="navbar navbar-dark bg-dark box-shadow">
+        <div class="container d-flex justify-content-between">
+          <a href="." class="navbar-brand d-flex align-items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+            <strong>JSpank</strong>
+          </a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main role="main">
+
+      <section class="jumbotron">
+        <div class="container">
+            <ul class="list-group" ng-repeat="item in itens track by $index">
+                <li class="list-group-item" data-code="{{item}}"> 
+                    <a href="quizeapp://cod/{{item}}" target="_blank" ng-click="remove(item)">{{$index}}: {{item}}</a></li>
+              </ul>
+        </div>
+      </section>
+     
+
+    </main>
+
+ 
+    <footer class="text-muted"> 
+      <div class="container">
+            <hr>
+        <p class="float-right">
+          <a href="#">Back to top</a>
+        </p>
+        <i>Ⓡ2018, JSpank</i>
+     </div>
+    </footer>
+</div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular.min.js"></script>
+    <script>
+        
+
+        angular.module('uiApp', [])
+            .controller('appController', function( $scope) {
+                var itens = []
+                itens.push('btyda495');
+                itens.push('cgg345');
+                itens.push('DQJJK394');
+                itens.push('P7WQ85');
+                itens.push('9eyb49');
+                itens.push('py7td537');
+                itens.push('JPE884');
+                itens.push('XD5E89');
+                itens.push('Wsmm64');
+                itens.push('w73n89');
+                itens.push('qwebk743');
+                itens.push('9wd9d374');
+                itens.push('RRK365');
+                itens.push('jwjd46');
+                itens.push('Fk7sj644');
+                itens.push('Rt499485');
+                itens.push('xdyx5749');
+                itens.push('Fk7sj644');
+                itens.push('py7td537');
+                itens.push('s7e457');
+                itens.push('Ynwq43');
+                itens.push('t6xr47');
+                itens.push('y9kma746');	
+                itens.push('f3nft577');
+                itens.push('ckbks965');
+                itens.push('4qfc95');
+                itens.push('655k8563');
+                itens.push('9p7f4344');
+                itens.push('md993673');
+                itens.push('sqcbj758');
+                itens.push('nckff955');
+                itens.push('ncss46');
+                itens.push('q5b658');
+                itens.push('Bpp648');
+                itens.push('6PKDN558');
+                itens.push('qqdrw467');
+                itens.push('9T4RP355');
+                itens.push('5hmcg343');
+                itens.push('r6jkd588');
+                itens.push('5hmcg343');
+                itens.push('xj3r48');
+                itens.push('xj3r48');
+                itens.push('6FG648');
+                itens.push('rx6793');
+                itens.push('5839h368');
+                itens.push('y6myc884');
+                itens.push('mrhsx967');
+                itens.push('eynp74');
+                itens.push('g9eb63');
+                itens.push('K9AJ95');
+                itens.push('y9kma746');
+                itens.push('4qfc95');
+
+
+
+                $scope.itens = itens; 
+                $scope.remove = function(item){
+                   // $scope.itens.splice(index, 1);
+                   $('[data-code="'+item+'"]').remove();
+                }
+            });
+    </script>
+  </body>
+</html>
+   <!-- Global site tag (gtag.js) - Google Analytics -->
+   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-76968512-2"></script>
+   <script>
+       window.dataLayer = window.dataLayer || [];
+       function gtag() { dataLayer.push(arguments); }
+       gtag('js', new Date());
+
+       gtag('config', 'UA-76968512-2');
+   </script>
