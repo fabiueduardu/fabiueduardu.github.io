@@ -49,6 +49,7 @@
                 <li class="list-group-item" data-code="{{item}}"> 
                     <a href="quizeapp://cod/{{item}}" target="_blank" ng-click="remove(item)">{{$index}}: {{item}}</a></li>
               </ul>
+              <button class="btn btn-default btn-block" ng-click="tryAll()">ALL</button>
         </div>
       </section>
      
@@ -72,10 +73,17 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular.min.js"></script>
     <script>
-        
+        var app =  angular.module('uiApp', []);
 
-        angular.module('uiApp', [])
-            .controller('appController', function( $scope) {
+       
+        app.config(['$compileProvider',
+            function( $compileProvider )
+            {   
+                $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension|quizeapp):/);
+             }
+        ]);
+
+            app.controller('appController', function( $scope) {
                 var itens = []
                 itens.push('btyda495');
                 itens.push('cgg345');
@@ -137,6 +145,31 @@
                    // $scope.itens.splice(index, 1);
                    $('[data-code="'+item+'"]').remove();
                 }
+
+              $scope.tryAll = function(){
+                   $(itens).each(function(i, item){ 
+                    var appUrl = 'quizeapp://cod/'+item;
+                    console.log('try: '+appUrl);
+                    try{
+
+                        $.ajax({
+                            url: appUrl,
+                                type: 'GET',
+                                success: function(data){ 
+                                    $('[data-code="'+item+'"]').remove();
+                                },
+                                error: function(data) {
+                                     throw data;
+                                }
+                            }); 
+              
+                       }catch(error){
+                        console.log('error: ');
+                        console.log(error);
+                       }
+                    });
+                }
+                
             });
     </script>
   </body>
