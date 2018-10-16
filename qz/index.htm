@@ -90,59 +90,69 @@
 
             app.controller('appController', function( $scope) {
                 var itens = []
-                itens.push('btyda495');
-                itens.push('cgg345');
+
+               var hashValue = location.hash;
+               if(hashValue){
+                 $(hashValue.substring(1).split(';')).each(function(i, value){
+                  itens.push(value.toUpperCase());
+                 });
+               }
+
+                 itens.push('3SHA48');
+                itens.push('HRSB36');
+                itens.push('TWR344');
+                itens.push('BTYDA495');
+                itens.push('CGG345');
                 itens.push('DQJJK394');
                 itens.push('P7WQ85');
-                itens.push('9eyb49');
-                itens.push('py7td537');
+                itens.push('9EYB49');
+                itens.push('PY7TD537');
                 itens.push('JPE884');
                 itens.push('XD5E89');
-                itens.push('Wsmm64');
-                itens.push('w73n89');
-                itens.push('qwebk743');
-                itens.push('9wd9d374');
+                itens.push('WSMM64');
+                itens.push('W73N89');
+                itens.push('QWEBK743');
+                itens.push('9WD9D374');
                 itens.push('RRK365');
-                itens.push('jwjd46');
-                itens.push('Fk7sj644');
-                itens.push('Rt499485');
-                itens.push('xdyx5749');
-                itens.push('Fk7sj644');
-                itens.push('py7td537');
-                itens.push('s7e457');
-                itens.push('Ynwq43');
-                itens.push('t6xr47');
-                itens.push('y9kma746');	
-                itens.push('f3nft577');
-                itens.push('ckbks965');
-                itens.push('4qfc95');
-                itens.push('655k8563');
-                itens.push('9p7f4344');
-                itens.push('md993673');
-                itens.push('sqcbj758');
-                itens.push('nckff955');
-                itens.push('ncss46');
-                itens.push('q5b658');
-                itens.push('Bpp648');
+                itens.push('JWJD46');
+                itens.push('FK7SJ644');
+                itens.push('RT499485');
+                itens.push('XDYX5749');
+                itens.push('FK7SJ644');
+                itens.push('PY7TD537');
+                itens.push('S7E457');
+                itens.push('YNWQ43');
+                itens.push('T6XR47');
+                itens.push('Y9KMA746');	
+                itens.push('F3NFT577');
+                itens.push('CKBKS965');
+                itens.push('4QFC95');
+                itens.push('655K8563');
+                itens.push('9P7F4344');
+                itens.push('MD993673');
+                itens.push('SQCBJ758');
+                itens.push('NCKFF955');
+                itens.push('NCSS46');
+                itens.push('Q5B658');
+                itens.push('BPP648');
                 itens.push('6PKDN558');
-                itens.push('qqdrw467');
+                itens.push('QQDRW467');
                 itens.push('9T4RP355');
-                itens.push('5hmcg343');
-                itens.push('r6jkd588');
-                itens.push('5hmcg343');
-                itens.push('xj3r48');
-                itens.push('xj3r48');
+                itens.push('5HMCG343');
+                itens.push('R6JKD588');
+                itens.push('5HMCG343');
+                itens.push('XJ3R48');
+                itens.push('XJ3R48');
                 itens.push('6FG648');
-                itens.push('rx6793');
-                itens.push('5839h368');
-                itens.push('y6myc884');
-                itens.push('mrhsx967');
-                itens.push('eynp74');
-                itens.push('g9eb63');
+                itens.push('RX6793');
+                itens.push('5839H368');
+                itens.push('Y6MYC884');
+                itens.push('MRHSX967');
+                itens.push('EYNP74');
+                itens.push('G9EB63');
                 itens.push('K9AJ95');
-                itens.push('y9kma746');
-                itens.push('4qfc95');
- 
+                itens.push('Y9KMA746');
+                itens.push('4QFC95'); 
 
                 $scope.itens = itens; 
                 $scope.remove = function(value){
