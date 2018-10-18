@@ -7,55 +7,62 @@
     <meta name="description" content="Códigos de pulos">
     <meta name="keywords" content="game, show, game show, dinheiro, quize, quize app, app"/>    
     <title>JSpank</title>
-    <style>.linethrough{ 
-        text-decoration:line-through;
-        color:#ccc;
+    <style>
+    .jaUtilizado{ 
+        text-decoration:line-through;        
      }
-        </style>
+
+        .teg-1
+        {
+            font-size: 12px; 
+            color:#FF0000;
+        }
+        .teg-2
+        {
+            font-size: 15px; 
+            color: #000000;
+        }
+        .teg-3
+        {
+            font-size: 17px; 
+            color: #CCCCCC;
+        }
+        .teg-4
+        {
+            font-size: 19px; 
+            color: #000000;
+        }
+        .teg-5
+        {
+            font-size: 21px; 
+            color: #999999;
+        }
+        .teg-6
+        {
+            font-size: 23px; 
+            color: #FF0000;
+        }
+        .teg-7
+        {
+            font-size: 30px; 
+            color: #000000;
+        }
+
+        #tegcloud a{
+            padding:5px;
+        }
+                </style>
     <body>
-    <div  ng-controller="appController" ng-cloak>
-
-            <header>
-                    <div class="collapse bg-dark" id="navbarHeader">
-                      <div class="container">
-                        <div class="row">
-                          <div class="col-sm-8 col-md-7 py-4">
-                            <h4 class="text-white">About</h4>
-                            <p class="text-muted">Aliquam quis libero id turpis mattis elementum.</p>
-                          </div>
-                          <div class="col-sm-4 offset-md-1 py-4">
-                            <h4 class="text-white">Contact</h4>
-                            <ul class="list-unstyled">
-                              <li><a href="https://twitter.com/fabiueduardu" class="text-white" target=_blank>Twitter</a></li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="navbar navbar-dark bg-dark box-shadow">
-                      <div class="container d-flex justify-content-between">
-                        <a href="." class="navbar-brand d-flex align-items-center">
-                          <strong>{{itens.length}} Código(s)</strong>
-                        </a>
-                        
-                      </div>
-                    </div>
-                  </header>
-                  
-                <main role="main">
-                    
-                <section class="jumbotron">
-                    <div class="container">
-                        <ul class="list-group" ng-repeat="item in itens track by $index">
-                            <li class="list-group-item" data-code="{{item}}"> 
-                                <a  ng-class="{'linethrough':hasAdd(item)}" title="{{item}}" href="quizeapp://cod/{{item}}" target="_blank" ng-click="remove(item)">{{$index}}: {{item}}</a></li>
-                        </ul>
-                    </div>
-                </section>
-
-    </main>
-
- 
+    <div ng-controller="appController" ng-cloak>
+    <main role="main">
+      <section class="jumbotron">
+        <div class="container">
+                <div id="tegcloud">
+                        <a  href="quizeapp://cod/{{item.text}}" data-code="{{item.text}}" title="{{item.text}}" target="_blank" ng-repeat="item in itens track by $index" ng-class="{'jaUtilizado':hasAdd(item)}" class="{{item.cssClass}}" ng-click="remove(item)">{{item.text}}</a>
+                </div>
+         </div>
+      </section>
+    </main> 
     <footer class="text-muted"> 
       <div class="container">
             <hr>
@@ -72,7 +79,11 @@
     <script>
         var loadStorageKey = 'qzItens';
         var dbName = 'db.txt';
+        var cssClassCloud = ['teg-1', 'teg-2', 'teg-3', 'teg-4', 'teg-5', 'teg-6', 'teg-7'];
         var app =  angular.module('uiApp', []);
+        var getElement = function(value){
+                   return  {text: value, cssClass: cssClassCloud[~~(Math.random()*cssClassCloud.length)]};
+            };
        
         app.config(['$compileProvider',
             function( $compileProvider )
@@ -81,12 +92,12 @@
              }
         ]);
 
-              app.controller('appController', ['$scope','$http',function( $scope,$http) {
+      app.controller('appController', ['$scope','$http',function( $scope,$http) {
                 $scope.itens = [];
                 $http.get(dbName).then( function(response){
                     var itens = response.data.split('\n');
                     $(itens).each(function(i, tag){
-                        $scope.itens.push(tag.toUpperCase().trim());
+                        $scope.itens.push(getElement(tag));
                     });
 
                 }, function(data){alert('error: '+JSON.stringify(response));});
@@ -94,19 +105,21 @@
                var hashValue = location.hash;
                if(hashValue){
                  $(hashValue.substring(1).split(';')).each(function(i, value){
-                    $scope.itens.push(value.toUpperCase().trim());
+                    $scope.itens.push(getElement(value.toUpperCase()));
                  });
-               }               
+               } 
+
+               
 
                 $scope.remove = function(value){
-                    $('[data-code="'+value+'"]').remove();
-                    localStorageItem.add(value);
+                    $('[data-code="'+value.text+'"]').addClass('jaUtilizado');
+                    localStorageItem.add(value.text);
                 }
 
                 $scope.hasAdd = function(value){
-                  return localStorageItem.has(value);
+                  return localStorageItem.has(value.text);
                 }
-
+   
                 var  localStorageItem = {
                     has:function(value){
                         var localStorageValue = localStorage.getItem(loadStorageKey)||'';       
@@ -143,7 +156,7 @@
                 }
                 
             }]);
-    </script>
+     </script>
   </body>
 </html>
    <!-- Global site tag (gtag.js) - Google Analytics -->
