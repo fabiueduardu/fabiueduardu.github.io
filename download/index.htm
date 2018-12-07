@@ -67,13 +67,14 @@
                     <input type="text" id="url_download" required ng-model="url_download" class="form-control input-lg"  placeholder="https://www.instagram.com/p/CODE"  autocomplete="off" >   
                  </div> 
                  
-                        <button type="button" class="btn btn-success" ng-click="download();">Download</button>
+                        <button type="button" class="btn btn-success" ng-click="download();" ng-disabled="download_started">Download</button>
                         <button type="button" class="btn btn-danger" ng-click="clearCache();">Clear Cache</button> 
                         <button type="reset" class="btn btn-warning" >Reset</button> 
+                        <hr>
                         <div ng-show="itens.length>0">{{itens.length}} Record(s)
                                 <span ng-show="searchTerm"> to <strong>{{searchTerm}}</strong>
-                        </div>
-                        <div ng-hide="itens.length>0">No records found!
+                        </div> 
+                        <div ng-hide="itens.length>0"  >No records found!
                             <span ng-show="searchTerm"> to <strong>{{searchTerm}}</strong></span>
                         </div>
            </form> 
@@ -98,7 +99,9 @@
           <div class="row">              
             <div class="col-md-3" ng-repeat="item in itens track by $index">
                 <div class="card mb-3 box-shadow" >
-                    <img class="card-img-top"  src="{{item.thumbUrl}}" title="{{item.description}}"  >
+                    <a href="{{item.linkOriginal}}" title="{{item.description}}" target="_blank" >
+                         <img class="card-img-top"  src="{{item.thumbUrl}}" title="{{item.description}}"  >
+                     </a>
                     <div class="card-body">
                     <p class="card-text"><span class="badge badge-light">{{$index+1}}</span>
                         {{item.description}} </p>
@@ -106,7 +109,7 @@
                         <div class="btn-group"> 
                             <a href="{{item.link}}" target="_blank" title="View, Download"><svg height="32" class="octicon octicon-cloud-download" viewBox="0 0 16 16" version="1.1" width="32" aria-hidden="true"><path fill-rule="evenodd" d="M9 12h2l-3 3-3-3h2V7h2v5zm3-8c0-.44-.91-3-4.5-3C5.08 1 3 2.92 3 5 1.02 5 0 6.52 0 8c0 1.53 1 3 3 3h3V9.7H3C1.38 9.7 1.3 8.28 1.3 8c0-.17.05-1.7 1.7-1.7h1.3V5c0-1.39 1.56-2.7 3.2-2.7 2.55 0 3.13 1.55 3.2 1.8v1.2H12c.81 0 2.7.22 2.7 2.2 0 2.09-2.25 2.2-2.7 2.2h-2V11h2c2.08 0 4-1.16 4-3.5C16 5.06 14.08 4 12 4z"></path></svg></a>
                             <a href="#{{$index}}" ng-click="remove($index)" title="Remove"><svg height="32" class="octicon octicon-trashcan" viewBox="0 0 12 16" version="1.1" width="24" aria-hidden="true"><path fill-rule="evenodd" d="M11 2H9c0-.55-.45-1-1-1H5c-.55 0-1 .45-1 1H2c-.55 0-1 .45-1 1v1c0 .55.45 1 1 1v9c0 .55.45 1 1 1h7c.55 0 1-.45 1-1V5c.55 0 1-.45 1-1V3c0-.55-.45-1-1-1zm-1 12H3V5h1v8h1V5h1v8h1V5h1v8h1V5h1v9zm1-10H2V3h9v1z"></path></svg></a>
-                          
+                            <a href="whatsapp://send?text={{item.link}}" class="d-xl-none"  data-action="share/whatsapp/share" title="Share on WhatsApp"><svg height="32" class="octicon octicon-comment-discussion" viewBox="0 0 16 16" version="1.1" width="32" aria-hidden="true"><path fill-rule="evenodd" d="M15 1H6c-.55 0-1 .45-1 1v2H1c-.55 0-1 .45-1 1v6c0 .55.45 1 1 1h1v3l3-3h4c.55 0 1-.45 1-1V9h1l3 3V9h1c.55 0 1-.45 1-1V2c0-.55-.45-1-1-1zM9 11H4.5L3 12.5V11H1V5h4v3c0 .55.45 1 1 1h3v2zm6-3h-2v1.5L11.5 8H6V2h9v6z"></path></svg></a>
                         </div>
                      <small class="text-muted">{{item.dateCreate}}</small>
                     </div>
@@ -145,6 +148,8 @@
        var indexOfThumb = 'property="og:image" content="';
        var indexOfThumbEnd = '"';
        var loadStorageKey = 'jsDownloads';
+       var hasQueryString = '?';
+       var endValue = '"';
        var messages =  {
             not_found:'Not found',
             has_error:'There was an error, please try again.',
@@ -234,16 +239,13 @@
 
                     if(!url)
                         return alert(messages.url_required);
-                        
+                    
+                    $scope.download_started = true;
                     $.ajax({
                         url:url,
                         type: 'GET',
                         success: function(data){ 
-                                var dataHTML = data;
-                                var indexOf = data.indexOf(indexOfMp4);
-                                var substringAt = data.substring(0,indexOf + indexOfMp4.length);
-                                data = data.substring(indexOf+ indexOfMp4.length);
-                                var totalLink = 0;
+                                var dataHTML = data; 
 
                                 var itemLinkThumb = $scope.getThumb(dataHTML);
                                 var itemTitle = $scope.getTitle(dataHTML);
@@ -253,13 +255,33 @@
                                         ,thumbUrl: itemLinkThumb
                                         ,dateCreate: new Date().toLocaleDateString()+' '+new Date().toLocaleTimeString()
                                         ,description : itemTitle
+                                        ,linkOriginal: url
                                     };
+
+                                var substringAtSearch = function(data){
+                                    var substringAt = data.substring(0,indexOf + indexOfMp4.length+1); 
+                                    if(substringAt[substringAt.length-1]==hasQueryString)
+                                   {
+                                        var tmp  = data.substring(substringAt.length);
+                                        substringAt += tmp.substring(0, tmp.indexOf(endValue));
+                                       
+                                    }
+                                    else{
+                                     substringAt += substringAt.substring(0, substringAt.length-1);
+                                    }
+ 
+                                    return substringAt;
+                                }
                      
+                                var indexOf = data.indexOf(indexOfMp4);
+                                var substringAt = substringAtSearch(data);
+                                data = data.substring(indexOf+ indexOfMp4.length);
+                                var totalLink = 0;
                                 while(indexOf != -1)
                                 {
                                     var  link = $scope.getLink(substringAt); 
                                     indexOf = data.indexOf(indexOfMp4);
-                                    substringAt = data.substring(0,indexOf + indexOfMp4.length); 
+                                    substringAt = substringAtSearch(data);
                                     data = data.substring(indexOf+ indexOfMp4.length);  
                                     totalLink++;
                                     
@@ -271,12 +293,14 @@
                                             ,thumbUrl: item_default.thumbUrl
                                             ,dateCreate: new Date().toLocaleDateString()+' '+new Date().toLocaleTimeString()
                                             ,description : item_default.description
+                                            ,linkOriginal: url
                                     };
 
                                     $scope.itens.splice(0, 0, item);
                                     $scope.itens_readonly.splice(0, 0, item);
 
-                                    links.push(link);
+                                    if(links.indexOf(link)===-1);
+                                        links.push(link);
                                     if(totalLink>=maxVideSearch)
                                         break;
                                 }
@@ -288,12 +312,15 @@
                                 }
                                 
                                 localStorage.setItem(loadStorageKey,JSON.stringify($scope.itens));
-                                $scope.$apply();
+
+                                 $scope.download_started = false;
+                                $scope.$apply(); 
                         },
                         error: function(data) {
                             alert(messages.has_error + '['+ data.statusText + ']');
+                            $scope.download_started = false;
                             console.log(data);
-                        }
+                        } 
                     }); 
                 }
                 $scope.LoadLocalStorage();
