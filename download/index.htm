@@ -64,7 +64,7 @@
 
                             <strong>  *URL</strong></span>
                     </div>
-                    <input type="text" id="url_download" required ng-model="url_download" class="form-control input-lg"  placeholder="https://www.instagram.com/p/CODE"  autocomplete="off" >   
+                    <input type="text" id="url_download" required ng-model="url_download" class="form-control input-lg"  autocomplete="off" >   
                  </div> 
                  
                         <button type="button" class="btn btn-success" ng-click="download();" ng-disabled="download_started">Download</button>
@@ -93,7 +93,7 @@
                                                 <svg height="32" class="octicon octicon-search" viewBox="0 0 16 16" version="1.1" width="32" aria-hidden="true"><path fill-rule="evenodd" d="M15.7 13.3l-3.81-3.83A5.93 5.93 0 0 0 13 6c0-3.31-2.69-6-6-6S1 2.69 1 6s2.69 6 6 6c1.3 0 2.48-.41 3.47-1.11l3.83 3.81c.19.2.45.3.7.3.25 0 .52-.09.7-.3a.996.996 0 0 0 0-1.41v.01zM7 10.7c-2.59 0-4.7-2.11-4.7-4.7 0-2.59 2.11-4.7 4.7-4.7 2.59 0 4.7 2.11 4.7 4.7 0 2.59-2.11 4.7-4.7 4.7z"></path></svg>
                                           </span>
                                     </div>
-                            <input type="text" ng-disabled="itens.length==0" maxlength="20" ng-change="contentsFilter();" placeholder="Search..." ng-model="searchTerm"  class="form-control input-lg" >
+                            <input type="text" maxlength="20" ng-change="contentsFilter();" placeholder="Search..." ng-model="searchTerm"  class="form-control input-lg" >
                     </div></div>
                 </div>
           <div class="row">              
@@ -160,9 +160,6 @@
             .controller('appController', function( $scope) {
                 $scope.itens = [];
                 $scope.itens_readonly = [];
-
-                if(location.hash)
-                     $scope.url_download =location.hash.substring(1);
  
                 $scope.LoadLocalStorage = function(){
                 
@@ -323,8 +320,27 @@
                         } 
                     }); 
                 }
-                $scope.LoadLocalStorage();
+
+                $scope.LoadLocalStorage(); 
+                
+                if(location.hash){
+                    var url_download = location.hash.substring(1);
+                      $scope.url_download =url_download;  
+
+                    setTimeout(function(){
+                      var $itemTarget = $('a[href="'+url_download+'"]:last');
+                      if($itemTarget.length) {
+                        $itemTarget.parents('.card').addClass('bg-success'); 
+                            $([document.documentElement, document.body]).animate({
+                                scrollTop: $itemTarget.offset().top
+                            }, 2000);
+                        }else{
+                            $scope.download(); 
+                        }
+                    },1000);
+                }
             });
+            
     </script>
   </body>
 </html>
